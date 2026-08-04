@@ -1,0 +1,43 @@
+# Build output
+build/
+out/
+*.o
+*.ko
+*.mod
+*.mod.c
+*.d
+*.a
+*.so
+*.dtb
+*.dtbo
+*.img
+*.bin
+
+# Generated kernel/build files
+.config
+Module.symvers
+modules.order
+include/config/
+include/generated/
+
+# Runtime and logs
+*.log
+*.pid
+*.swp
+*.swo
+logs/
+tmp/
+
+# Local secrets and machine-specific configuration
+configs/mqtt.conf
+configs/wifi.conf
+*.pem
+*.key
+*.crt
+*.secret
+
+# IDE and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

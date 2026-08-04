@@ -1,0 +1,15 @@
+# Copy to configs/mqtt.conf and fill in local values.
+# Do not commit the completed file.
+
+broker=
+port=1883
+client_id=imx6ull-gateway-demo
+username=
+password=
+keepalive=60
+qos=1
+
+topic_telemetry=gateway/imx6ull/telemetry
+topic_event=gateway/imx6ull/event
+topic_command=gateway/imx6ull/command
+topic_response=gateway/imx6ull/response
