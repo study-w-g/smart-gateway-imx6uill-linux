@@ -1,0 +1,1 @@
+# smart-gateway-imx6uill-linux
