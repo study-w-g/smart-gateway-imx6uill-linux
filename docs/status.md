@@ -1,23 +1,25 @@
-# Project Status
+# 项目状态
 
-Last updated: 2026-08-04
+最后更新：2026-08-04
 
-## Completed in repository
+## 仓库中已完成
 
-- [x] Initial repository structure
-- [x] README and development roadmap
-- [x] Hardware parameter template
-- [x] Driver and system architecture notes
-- [x] Build/deploy checklist
-- [x] MQTT configuration example
+- [x] 初始仓库目录
+- [x] 项目说明和开发路线
+- [x] 硬件参数模板
+- [x] 驱动和系统架构说明
+- [x] 构建/部署清单
+- [x] MQTT 配置示例
 
-## Not yet implemented in repository
+## 仓库中尚未实现
 
-- [ ] DS18B20 driver source
-- [ ] SHT30 I2C driver source
-- [ ] GPIO key/LED driver source
-- [ ] Device-tree source for the actual board
-- [ ] User-space gateway manager
-- [ ] QT UI
-- [ ] MQTT client integration
-- [ ] Hardware test evidence
+- [x] DS18B20 驱动源码初版
+- [ ] SHT30 I2C 驱动源码
+- [ ] GPIO 按键/LED 驱动源码
+- [ ] 实际开发板设备树源码
+- [ ] 用户态网关管理服务
+- [ ] Qt 界面
+- [ ] MQTT 客户端集成
+- [ ] 硬件测试记录
+
+DS18B20 驱动仍需结合目标内核、实际 GPIO 和传感器完成板端编译与硬件验证，不能仅凭源码标记为最终完成。

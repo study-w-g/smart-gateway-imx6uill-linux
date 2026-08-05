@@ -1,50 +1,50 @@
-# Development Roadmap
+# 开发路线
 
-## Phase 0 - Hardware and toolchain
+## 阶段 0：硬件和工具链
 
-- [ ] Confirm board model, kernel version and cross compiler.
-- [ ] Confirm every bus, GPIO, UART and sensor address.
-- [ ] Record the first successful serial boot.
+- [ ] 确认开发板型号、内核版本和交叉编译器。
+- [ ] 确认所有总线、GPIO、UART 和传感器地址。
+- [ ] 记录第一次成功的串口启动信息。
 
-## Phase 1 - Minimal Linux system
+## 阶段 1：最小 Linux 系统
 
-- [ ] Build U-Boot, kernel, device tree and Rootfs.
-- [ ] Boot through TFTP/NFS.
-- [ ] Bring up USB Wi-Fi and verify network access.
+- [ ] 构建 U-Boot、内核、设备树和根文件系统。
+- [ ] 通过 TFTP/NFS 启动。
+- [ ] 启动 USB Wi-Fi 并验证网络访问。
 
-## Phase 2 - Drivers
+## 阶段 2：设备驱动
 
-- [ ] DS18B20 protocol and character device.
-- [ ] DS18B20 periodic work, blocking read and `poll()`.
-- [ ] SHT30 I2C driver, conversion and CRC.
-- [ ] GPIO key interrupt, debounce and event queue.
-- [ ] LED state control.
+- [ ] 完成 DS18B20 协议和字符设备。
+- [ ] 完成 DS18B20 周期工作、阻塞读取和 `poll()`。
+- [ ] 完成 SHT30 I2C 驱动、数据转换和 CRC。
+- [ ] 完成 GPIO 按键中断、消抖和事件队列。
+- [ ] 完成 LED 状态控制。
 
-## Phase 3 - User space
+## 阶段 3：用户态程序
 
-- [ ] Sensor service with explicit error handling.
-- [ ] LX-16A UART control.
-- [ ] MQTT telemetry, command parsing and reconnect.
-- [ ] QT monitor.
+- [ ] 完成带明确错误处理的传感器服务。
+- [ ] 完成 LX-16A UART 控制。
+- [ ] 完成 MQTT 遥测、命令解析和断线重连。
+- [ ] 完成 Qt 监控界面。
 
-## Phase 4 - Validation and presentation
+## 阶段 4：验证和项目展示
 
-- [ ] Sensor disconnect tests.
-- [ ] I2C/UART/network failure recovery.
-- [ ] Clean build from documented instructions.
-- [ ] Add test logs and screenshots without credentials.
-- [ ] Update README status and resume wording.
+- [ ] 完成传感器断开测试。
+- [ ] 完成 I2C/UART/网络故障恢复。
+- [ ] 按文档完成一次干净构建。
+- [ ] 添加不含账号信息的测试日志和截图。
+- [ ] 更新 README 项目状态和简历描述。
 
-## Suggested commits
+## 建议的提交记录
 
 ```text
-Initialize project skeleton
-Add hardware and architecture documentation
-Add i.MX6ULL build notes
-Add DS18B20 driver
-Add SHT30 I2C driver
-Add GPIO event and LED driver
-Add gateway manager
-Add MQTT communication
-Add test report and evidence
+初始化项目目录
+补充硬件和系统架构文档
+补充 i.MX6ULL 构建说明
+增加 DS18B20 驱动
+增加 SHT30 I2C 驱动
+增加 GPIO 事件和 LED 驱动
+增加网关管理服务
+增加 MQTT 通信
+增加测试报告和验证记录
 ```

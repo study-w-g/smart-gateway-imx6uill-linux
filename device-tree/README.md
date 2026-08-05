@@ -1,4 +1,4 @@
-# Device Tree
+# 设备树
 
 本目录将在确认具体 i.MX6ULL 开发板和引脚映射后存放 DTS/DTSI 文件。
 

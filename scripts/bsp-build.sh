@@ -5,28 +5,28 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 ENV_FILE="${1:-${ROOT_DIR}/configs/board.env}"
 
 if [[ ! -f "${ENV_FILE}" ]]; then
-    echo "Missing ${ENV_FILE}; copy configs/board.env.example first." >&2
+    echo "找不到 ${ENV_FILE}；请先复制 configs/board.env.example。" >&2
     exit 1
 fi
 
 # shellcheck disable=SC1090
 source "${ENV_FILE}"
 
-: "${UBOOT_DIR:?Set UBOOT_DIR in board.env}"
-: "${KERNEL_DIR:?Set KERNEL_DIR in board.env}"
-: "${CROSS_COMPILE:?Set CROSS_COMPILE in board.env}"
+: "${UBOOT_DIR:?请在 board.env 中设置 UBOOT_DIR}"
+: "${KERNEL_DIR:?请在 board.env 中设置 KERNEL_DIR}"
+: "${CROSS_COMPILE:?请在 board.env 中设置 CROSS_COMPILE}"
 
 mkdir -p "${OUT_DIR}"
 
-echo "Board: ${BOARD_NAME}"
-echo "U-Boot source: ${UBOOT_DIR}"
-echo "Kernel source: ${KERNEL_DIR}"
+echo "开发板：${BOARD_NAME}"
+echo "U-Boot 源码：${UBOOT_DIR}"
+echo "内核源码：${KERNEL_DIR}"
 echo
-echo "This script intentionally stops before selecting a defconfig or DTS."
-echo "Confirm the exact vendor BSP files for I.MX6U ALPHA V2.2 first."
-echo "No DS18B20 device-tree node is added by this repository."
+echo "本脚本在选择默认配置和设备树之前主动停止。"
+echo "请先确认 I.MX6U ALPHA V2.2 对应的厂家 BSP 文件。"
+echo "本仓库不会添加 DS18B20 设备树节点。"
 
-# After the vendor BSP is confirmed, add board-specific commands here:
+# 确认厂家 BSP 后，在这里补充开发板专用命令：
 # make -C "${UBOOT_DIR}" <vendor_defconfig> CROSS_COMPILE="${CROSS_COMPILE}"
 # make -C "${UBOOT_DIR}" CROSS_COMPILE="${CROSS_COMPILE}" -j"$(nproc)"
 # make -C "${KERNEL_DIR}" <vendor_defconfig> ARCH="${ARCH}" CROSS_COMPILE="${CROSS_COMPILE}"

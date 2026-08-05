@@ -1,33 +1,33 @@
-# Hardware Definition
+# 硬件定义
 
 这份文档是设备树和驱动开发的硬件参数入口。完成实物确认后再填写具体值。
 
-## Board
+## 开发板
 
-| Item | Value |
+| 项目 | 内容 |
 |---|---|
 | SoC | NXP i.MX6ULL |
-| Board model | TODO: fill actual board model |
-| Kernel version | TODO |
-| Cross compiler | TODO |
-| Rootfs method | NFS during development / TODO for final image |
+| 开发板型号 | 正点原子 I.MX6U ALPHA V2.2 |
+| 内核版本 | 待填写 |
+| 交叉编译器 | 待填写 |
+| 根文件系统方式 | 开发阶段使用 NFS / 最终镜像待确定 |
 
-## Peripheral map
+## 外设资源表
 
-| Device | Bus/resource | Address or GPIO | Direction | Status |
+| 设备 | 总线/资源 | 地址或 GPIO | 方向 | 状态 |
 |---|---|---|---|---|
-| DS18B20 | 1-Wire GPIO | TODO | input/output | to be verified |
-| SHT30 | I2C bus | TODO, normally 0x44 or 0x45 | input | to be verified |
-| User key | GPIO interrupt | TODO | input | to be verified |
-| Status LED | GPIO | TODO | output | to be verified |
-| LX-16A | UART | TODO | TX/RX | to be verified |
-| USB Wi-Fi | USB host | TODO chipset | network | to be verified |
+| DS18B20 | 1-Wire GPIO | 待确认 | 输入/输出 | 待验证 |
+| SHT30 | I2C 总线 | 待确认，通常为 0x44 或 0x45 | 输入 | 待验证 |
+| 用户按键 | GPIO 中断 | 待确认 | 输入 | 待验证 |
+| 状态 LED | GPIO | 待确认 | 输出 | 待验证 |
+| LX-16A | UART | 待确认 | TX/RX | 待验证 |
+| USB Wi-Fi | USB 主机 | 待确认芯片型号 | 网络 | 待验证 |
 
-## Bring-up checklist
+## 硬件确认清单
 
-- [ ] Confirm schematic and connector pinout.
-- [ ] Confirm GPIO numbering and active level.
-- [ ] Confirm I2C bus number and SHT30 address with `i2cdetect`.
-- [ ] Confirm UART level, baud rate and wiring.
-- [ ] Record logic-analyzer evidence for uncertain timings.
-- [ ] Update the device tree only after values are confirmed.
+- [ ] 确认原理图和接口引脚定义。
+- [ ] 确认 GPIO 编号和有效电平。
+- [ ] 使用 `i2cdetect` 确认 I2C 总线编号和 SHT30 地址。
+- [ ] 确认 UART 电平、波特率和接线。
+- [ ] 对不确定的时序保存逻辑分析仪记录。
+- [ ] 所有参数确认后再更新设备树。

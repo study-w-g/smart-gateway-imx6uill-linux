@@ -1,13 +1,13 @@
-# Contributing
+# 贡献规范
 
-1. Create a feature branch, for example `feature/ds18b20-driver`.
-2. Keep one functional change per commit.
-3. Run `make check` before committing.
-4. Never commit credentials, private keys or unredacted logs.
-5. Update the relevant design and test documentation with each driver.
+1. 创建功能分支，例如 `feature/ds18b20-driver`。
+2. 每次提交只包含一个功能变更。
+3. 提交前运行 `make check`。
+4. 绝不提交账号密码、私钥或未脱敏的日志。
+5. 每增加一个驱动，都同步更新对应的设计和测试文档。
 
-Suggested commit format:
+建议的提交信息格式：
 
 ```text
-Add <component>: <short description>
+增加<组成部分>：<简短说明>
 ```

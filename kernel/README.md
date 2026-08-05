@@ -1,4 +1,4 @@
-# Linux Kernel
+# Linux 内核
 
 将正点原子 I.MX6U ALPHA V2.2 配套 Linux 内核源码放在本地 `external/linux-atk/`，不要直接复制整个内核到本项目。
 

@@ -1,20 +1,20 @@
-# Root Filesystem
+# 根文件系统
 
 开发阶段建议先使用 BusyBox + NFS Rootfs，便于快速更新用户态测试程序和日志；功能稳定后再制作 SD/eMMC/NAND 可烧录镜像。
 
-## Local source location
+## 本地源码位置
 
 ```text
 external/buildroot-or-busybox/
 ```
 
-## Rootfs minimum content
+## 根文件系统的最小内容
 
 - `/bin/sh`
 - `mount`、`cp`、`cat`、`dmesg`、`insmod`、`rmmod`
-- `/dev` with devtmpfs
-- `/proc` and `/sys`
-- network tools
-- DS18B20 user-space test program
+- 带有 devtmpfs 的 `/dev`
+- `/proc` 和 `/sys`
+- 网络工具
+- DS18B20 用户态测试程序
 
 具体 BusyBox 配置、NFS 导出路径和启动脚本需要在板卡首次启动成功后补充。

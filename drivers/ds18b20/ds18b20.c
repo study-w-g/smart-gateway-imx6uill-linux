@@ -310,7 +310,7 @@ static int ds18b20_probe(struct platform_device *pdev)
 	sensor->dq = devm_gpiod_get(&pdev->dev, "dq", GPIOD_IN);
 	if (IS_ERR(sensor->dq))
 		return dev_err_probe(&pdev->dev, PTR_ERR(sensor->dq),
-				     "failed to get dq GPIO\n");
+				     "获取 DQ GPIO 失败\n");
 
 	/*
 	 * 保存模块初始化阶段已经分配好的字符设备号。
@@ -325,7 +325,7 @@ static int ds18b20_probe(struct platform_device *pdev)
 	/* 把 cdev 和 devt 注册到内核字符设备框架。 */
 	ret = cdev_add(&sensor->cdev, sensor->devt, 1);
 	if (ret)
-		return dev_err_probe(&pdev->dev, ret, "failed to add cdev\n");
+		return dev_err_probe(&pdev->dev, ret, "添加 cdev 失败\n");
 
 	/* 使用模块级 class，供 device_create() 创建用户态设备节点。 */
 	sensor->class = ds18b20_class;
@@ -342,7 +342,7 @@ static int ds18b20_probe(struct platform_device *pdev)
 		ret = PTR_ERR(sensor->chardev);
 		cdev_del(&sensor->cdev);
 		return dev_err_probe(&pdev->dev, ret,
-				     "failed to create device node\n");
+				     "创建设备节点失败\n");
 	}
 
 	/*
@@ -350,7 +350,7 @@ static int ds18b20_probe(struct platform_device *pdev)
 	 * suspend/resume 等回调可以通过 platform_get_drvdata(pdev) 取回它。
 	 */
 	platform_set_drvdata(pdev, sensor);
-	dev_info(&pdev->dev, "DS18B20 driver probed\n");
+	dev_info(&pdev->dev, "DS18B20 驱动探测成功\n");
 	return 0;
 }
 
@@ -436,4 +436,4 @@ module_exit(ds18b20_exit);
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("study-w-g");
-MODULE_DESCRIPTION("DS18B20 platform driver with 1-Wire character device");
+MODULE_DESCRIPTION("DS18B20 1-Wire 字符设备 platform 驱动");

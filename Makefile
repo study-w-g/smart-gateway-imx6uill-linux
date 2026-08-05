@@ -1,10 +1,10 @@
 .PHONY: help check tree clean
 
 help:
-	@echo "Targets:"
-	@echo "  make check  - check project skeleton and required documents"
-	@echo "  make tree   - print project directories"
-	@echo "  make clean  - remove local generated output"
+	@echo "可用目标："
+	@echo "  make check  - 检查项目目录和必需文档"
+	@echo "  make tree   - 显示项目目录"
+	@echo "  make clean  - 删除本地生成的输出文件"
 
 check:
 	@powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-project.ps1

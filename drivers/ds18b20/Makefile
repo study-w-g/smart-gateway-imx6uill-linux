@@ -1,4 +1,4 @@
-# DS18B20 external kernel module Makefile
+# DS18B20 外部内核模块 Makefile
 
 obj-m += ds18b20.o
 
@@ -10,7 +10,7 @@ CROSS_COMPILE ?= arm-linux-gnueabihf-
 
 all:
 	@if [ "$(KERNEL_DIR)" = "/path/to/linux-kernel" ]; then \
-		echo "Please set KERNEL_DIR to the target Linux kernel source directory."; \
+		echo "请将 KERNEL_DIR 设置为目标 Linux 内核源码目录。"; \
 		exit 1; \
 	fi
 	$(MAKE) -C $(KERNEL_DIR) \
@@ -23,11 +23,11 @@ clean:
 	@if [ -d "$(KERNEL_DIR)" ]; then \
 		$(MAKE) -C $(KERNEL_DIR) M=$(CURDIR) clean; \
 	else \
-		echo "KERNEL_DIR is not available; removing common local build outputs."; \
+		echo "KERNEL_DIR 不可用，正在删除常见的本地构建产物。"; \
 		rm -f *.o *.ko *.mod *.mod.c Module.symvers modules.order; \
 	fi
 
 help:
-	@echo "Build DS18B20 external module:"
+	@echo "构建 DS18B20 外部内核模块："
 	@echo "  make KERNEL_DIR=/path/to/linux-kernel CROSS_COMPILE=arm-linux-gnueabihf-"
 	@echo "  make clean KERNEL_DIR=/path/to/linux-kernel"

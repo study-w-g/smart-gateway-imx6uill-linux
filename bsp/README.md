@@ -1,4 +1,4 @@
-# i.MX6U ALPHA V2.2 BSP
+# i.MX6U ALPHA V2.2 板级支持包
 
 本目录保存与正点原子 I.MX6U ALPHA V2.2 开发板相关的构建入口、版本记录和补丁。
 

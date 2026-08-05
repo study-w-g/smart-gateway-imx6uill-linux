@@ -1,8 +1,8 @@
-# Build and Deploy
+# 构建与部署
 
-## Host preparation
+## 主机准备
 
-Record these values before adding build scripts:
+在补充构建脚本前记录以下参数：
 
 ```text
 BOARD=
@@ -14,27 +14,27 @@ NFS_ROOT=
 SERIAL_DEVICE=
 ```
 
-Do not commit machine-specific absolute paths.
+不要提交与个人电脑相关的绝对路径。
 
-## Planned build flow
+## 计划中的构建流程
 
 ```bash
-# Build U-Boot for the actual board
+# 为实际开发板构建 U-Boot
 make <board>_defconfig
 make CROSS_COMPILE=${CROSS_COMPILE} -j$(nproc)
 
-# Build Linux kernel and device tree
+# 构建 Linux 内核和设备树
 make <board>_defconfig
 make CROSS_COMPILE=${CROSS_COMPILE} zImage dtbs -j$(nproc)
 
-# Build the root filesystem with BusyBox or Buildroot.
-# Copy zImage, dtb and rootfs to the development server.
-# Boot through TFTP and mount rootfs through NFS.
+# 使用 BusyBox 或 Buildroot 构建根文件系统。
+# 将 zImage、dtb 和根文件系统复制到开发服务器。
+# 通过 TFTP 启动，并通过 NFS 挂载根文件系统。
 ```
 
-Exact board defconfig and deployment commands must be filled in after the board model is confirmed.
+确认开发板型号后，再补充准确的开发板默认配置和部署命令。
 
-## Target-side checks
+## 开发板端检查
 
 ```bash
 uname -a
@@ -44,6 +44,6 @@ ip addr
 ls /dev
 ```
 
-## First boot evidence
+## 第一次启动的验证记录
 
-Save sanitized U-Boot/kernel logs, driver probe logs, network results, and sensor test output under `docs/evidence/`.
+将脱敏后的 U-Boot/内核日志、驱动探测日志、网络结果和传感器测试输出保存到 `docs/evidence/`。

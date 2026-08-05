@@ -1,45 +1,45 @@
-# I.MX6U ALPHA V2.2 BSP Bring-up
+# I.MX6U ALPHA V2.2 板级支持包移植
 
-## Why the full BSP is not copied into this repository
+## 为什么不把完整板级支持包复制到本仓库
 
-The board-specific U-Boot and Linux sources are normally distributed in the vendor course/material package. A generic kernel may compile but still fail to boot because DDR initialization, pinctrl, storage, Ethernet, display and board device-tree details are vendor-specific.
+开发板对应的 U-Boot 和 Linux 源码通常随厂家课程或资料包提供。通用内核即使能够编译，也可能因为 DDR 初始化、引脚复用、存储、以太网、显示和板级设备树细节不同而无法启动。
 
-The repository therefore stores the reproducible project layer:
+因此，本仓库只保存项目自身、可复现的工程层内容：
 
-- exact source version and local source path
-- defconfig names after they are confirmed
-- patches written by this project
-- build/deploy scripts
-- boot and test logs with secrets removed
+- 确认后的源码版本和本地路径
+- 确认后的默认配置名称
+- 本项目编写的补丁
+- 构建和部署脚本
+- 删除敏感信息后的启动与测试日志
 
-## Bring-up order
+## 移植顺序
 
-1. Obtain the vendor BSP package for I.MX6U ALPHA V2.2.
-2. Identify the U-Boot directory, board defconfig, kernel version and matching DTS.
-3. Set `configs/board.env` from the example.
-4. Build the unmodified vendor BSP first.
-5. Boot the unmodified kernel and save the serial log.
-6. Confirm Ethernet and USB Wi-Fi before adding project drivers.
-7. Add project-specific device-tree nodes one at a time.
-8. Build the external DS18B20 module against the running kernel source.
+1. 获取 I.MX6U ALPHA V2.2 对应的厂家 BSP 资料包。
+2. 找到 U-Boot 目录、板级默认配置、内核版本和匹配的 DTS 文件。
+3. 根据示例创建并填写 `configs/board.env`。
+4. 先构建未修改的厂家 BSP。
+5. 启动未修改的内核并保存串口日志。
+6. 在加入项目驱动前确认以太网和 USB Wi-Fi 正常。
+7. 每次只添加一个项目所需的设备树节点。
+8. 使用正在运行的内核源码构建 DS18B20 外部模块。
 
-## NFS/TFTP roles
+## NFS/TFTP 的作用
 
-| Component | Typical role |
+| 组成部分 | 常见作用 |
 |---|---|
-| TFTP | Transfer U-Boot-selected kernel image and DTB during development |
-| NFS | Provide a writable development Rootfs to the board |
-| SD/eMMC/NAND | Store the final bootloader, kernel, DTB and Rootfs/image |
+| TFTP | 开发阶段传输 U-Boot 选择的内核镜像和设备树 |
+| NFS | 为开发板提供可写的开发用根文件系统 |
+| SD/eMMC/NAND | 保存最终的引导程序、内核、设备树和根文件系统镜像 |
 
-NFS does not modify the device tree automatically. The DTB loaded by U-Boot must be rebuilt and selected at boot.
+NFS 不会自动修改设备树。U-Boot 加载的 DTB 必须重新构建，并在启动时选择正确的文件。
 
-## Evidence to save
+## 需要保存的验证信息
 
-- U-Boot version and environment
-- Kernel version from `uname -a`
-- `/proc/device-tree/model`
-- first boot serial log
-- `dmesg` after network bring-up
-- exact commands used for each build
+- U-Boot 版本和环境变量
+- `uname -a` 输出的内核版本
+- `/proc/device-tree/model` 内容
+- 第一次启动的串口日志
+- 网络启动后的 `dmesg` 输出
+- 每次构建使用的完整命令
 
-Do not add the DS18B20 device node until the user has confirmed the actual GPIO and pull-up circuit.
+在确认实际 GPIO 和上拉电路前，不要添加 DS18B20 设备树节点。

@@ -1,4 +1,4 @@
-# DS18B20 Driver
+# DS18B20 驱动
 
 这是 DS18B20 1-Wire 字符设备驱动，采用 `platform_driver + device tree compatible + probe/remove` 结构，目标设备节点为 `/dev/ds18b20`。
 

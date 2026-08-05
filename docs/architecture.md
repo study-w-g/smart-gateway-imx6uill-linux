@@ -1,32 +1,32 @@
-# System Architecture
+# 系统架构
 
 ```text
-Sensor/GPIO/UART
+传感器/GPIO/UART
       |
-Device tree + Linux driver
+设备树 + Linux 驱动
       |
 /dev、sysfs、poll/event
       |
-gateway-manager (user space)
-      +--> QT local monitor
-      +--> MQTT telemetry and command channel
-      +--> LED / LX-16A control
+网关管理服务（用户态）
+      +--> Qt 本地监控
+      +--> MQTT 遥测与命令通道
+      +--> LED / LX-16A 控制
 ```
 
-## Responsibilities
+## 各层职责
 
-| Layer | Responsibility |
+| 层次 | 职责 |
 |---|---|
-| Device tree | Describe buses, GPIOs, addresses, pinctrl and hardware relationships |
-| Kernel driver | Translate Linux APIs to bus transactions, interrupts and device state |
-| User-space service | Combine sensor data, apply thresholds, handle events and recover failures |
-| QT UI | Display data and issue local control commands |
-| MQTT client | Upload telemetry and receive remote commands |
+| 设备树 | 描述总线、GPIO、地址、引脚复用和硬件关系 |
+| 内核驱动 | 将 Linux 接口转换为总线事务、中断处理和设备状态管理 |
+| 用户态服务 | 汇总传感器数据、执行阈值判断、处理事件并恢复故障 |
+| Qt 界面 | 显示数据并发出本地控制命令 |
+| MQTT 客户端 | 上传遥测数据并接收远程命令 |
 
-## Design rules
+## 设计原则
 
-1. Hardware access stays below the user-space service boundary.
-2. The UI does not access registers or GPIOs directly.
-3. Driver interfaces return explicit error codes.
-4. Blocking reads and `poll()` are used for event-driven data flow instead of busy loops.
-5. Every externally controlled command is validated before execution.
+1. 硬件访问位于用户态服务以下的层次。
+2. 界面不直接访问寄存器或 GPIO。
+3. 驱动接口返回明确的错误码。
+4. 使用阻塞读取和 `poll()` 实现事件驱动数据流，避免忙等待。
+5. 所有外部控制命令在执行前都必须校验。

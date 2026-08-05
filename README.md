@@ -1,4 +1,4 @@
-# i.MX6ULL Embedded Linux Smart Gateway
+# i.MX6ULL 嵌入式 Linux 智能网关
 
 基于 NXP i.MX6ULL 和嵌入式 Linux 的智能网关项目，目标是打通“外设驱动 - 用户态服务 - 本地监控 - 云端通信”的完整链路。
 
@@ -40,7 +40,7 @@ DS18B20 / SHT30 / GPIO / UART
 ├── device-tree/         设备树源文件和说明
 ├── docs/                硬件、架构、驱动、构建和测试文档
 ├── drivers/             Linux 外设驱动
-│   ├── ds18b20/         DS18B20 1-Wire 驱动（待实现）
+│   ├── ds18b20/         DS18B20 1-Wire 驱动
 │   ├── gpio_event/      GPIO 按键/LED 驱动（待实现）
 │   └── sht30/            SHT30 I2C 驱动（待实现）
 ├── qt/                  QT 本地监控界面（待实现）
@@ -53,7 +53,7 @@ DS18B20 / SHT30 / GPIO / UART
 
 | 模块 | 计划用途 | 当前状态 |
 |---|---|---|
-| NXP i.MX6ULL | 主控平台 | 待补充具体开发板型号 |
+| NXP i.MX6ULL | 主控平台 | 正点原子 I.MX6U ALPHA V2.2 |
 | DS18B20 | 1-Wire 温度采集 | 待实现 |
 | SHT30 | I2C 温湿度采集 | 待实现 |
 | GPIO 按键/LED | 输入事件与状态指示 | 待实现 |
@@ -98,6 +98,6 @@ make check
 
 BSP 官方资料入口和版本记录见 [docs/bsp-sources.md](docs/bsp-sources.md)。
 
-## License
+## 许可证
 
-本项目代码建议使用 MIT License；加入第三方代码时请遵循其原始许可证。
+本项目代码建议使用 MIT 许可证；加入第三方代码时请遵循其原始许可证。

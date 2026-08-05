@@ -1,5 +1,5 @@
-# Copy to configs/mqtt.conf and fill in local values.
-# Do not commit the completed file.
+# 复制为 configs/mqtt.conf，并填写本地参数。
+# 不要提交填写完成后的配置文件。
 
 broker=
 port=1883
