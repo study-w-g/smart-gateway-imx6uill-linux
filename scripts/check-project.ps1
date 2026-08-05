@@ -11,7 +11,13 @@ $required = @(
     'docs/status.md',
     'configs/mqtt.conf.example',
     'device-tree/README.md',
-    'tests/README.md'
+    'tests/README.md',
+    'bsp/README.md',
+    'kernel/README.md',
+    'uboot/README.md',
+    'rootfs/README.md',
+    'docs/bsp-bringup.md',
+    'configs/board.env.example'
 )
 
 $missing = @($required | Where-Object { -not (Test-Path $_) })

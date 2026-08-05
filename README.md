@@ -94,6 +94,8 @@ make check
 
 详见 [docs/status.md](docs/status.md)。
 
+目标板 BSP 入口见 [bsp/README.md](bsp/README.md) 和 [docs/bsp-bringup.md](docs/bsp-bringup.md)。当前不包含 DS18B20 设备树节点。
+
 ## License
 
 本项目代码建议使用 MIT License；加入第三方代码时请遵循其原始许可证。

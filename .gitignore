@@ -41,3 +41,7 @@ configs/wifi.conf
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Local vendor BSP sources and board-specific secrets
+external/
+configs/board.env
