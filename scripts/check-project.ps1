@@ -17,7 +17,8 @@ $required = @(
     'uboot/README.md',
     'rootfs/README.md',
     'docs/bsp-bringup.md',
-    'configs/board.env.example'
+    'configs/board.env.example',
+    'docs/bsp-sources.md'
 )
 
 $missing = @($required | Where-Object { -not (Test-Path $_) })
