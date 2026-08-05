@@ -1,15 +1,17 @@
 # DS18B20 Driver
 
-这是 DS18B20 1-Wire 字符设备驱动的初始版本，目标设备节点为 `/dev/ds18b20`。
+这是 DS18B20 1-Wire 字符设备驱动，采用 `platform_driver + device tree compatible + probe/remove` 结构，目标设备节点为 `/dev/ds18b20`。
 
 ## 当前内容
 
-- [x] GPIO 申请与释放
+- [x] `platform_driver` 与 `probe/remove`
+- [x] `compatible` 设备树匹配
+- [x] GPIO descriptor 申请与释放
 - [x] 1-Wire 基本复位、写字节、读字节流程
 - [x] 字符设备注册
 - [x] `read()` 接口
 - [x] 互斥锁保护读取流程
-- [ ] 设备树 DTS 节点
+- [ ] 设备树 DTS 节点接入目标板
 - [ ] 原始温度值转换为摄氏温度
 - [ ] Scratchpad CRC 校验
 - [ ] 传感器不存在和超时检测
@@ -23,16 +25,13 @@
 
 ## 设备树接口
 
-驱动当前查找：
-
-```text
-/ds18b20
-```
-
-并读取节点属性：
+驱动通过 `compatible` 自动匹配，并读取 `dq-gpios` 属性：
 
 ```dts
-ds_gpio = <&gpioX Y GPIO_ACTIVE_HIGH>;
+ds18b20 {
+    compatible = "study-wg,ds18b20";
+    dq-gpios = <&gpioX Y GPIO_ACTIVE_HIGH>;
+};
 ```
 
 实际 GPIO 编号和设备树写法需要根据开发板内核版本确认。
