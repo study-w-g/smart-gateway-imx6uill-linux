@@ -19,6 +19,26 @@ $required = @(
     'docs/bsp-bringup.md',
     'configs/board.env.example',
     'docs/bsp-sources.md'
+    'drivers/README.md',
+    'drivers/ds18b20/ds18b20.c',
+    'drivers/ds18b20/Makefile',
+    'drivers/sht30/sht30.c',
+    'drivers/sht30/Makefile',
+    'drivers/gpio_event/gpio_event.c',
+    'drivers/gpio_event/gpio_event_uapi.h',
+    'app/README.md',
+    'app/gateway_manager/gateway_manager.c',
+    'app/gateway_manager/mqtt_client.c',
+    'app/gateway_manager/Makefile',
+    'app/tests/test_ds18b20.c',
+    'app/tests/test_sht30.c',
+    'app/tests/test_gpio.c',
+    'app/servo_control/servo_control.c',
+    'qt/main.cpp',
+    'qt/mainwindow.cpp',
+    'qt/gateway-monitor.pro',
+    'docs/learning-flow.md',
+    'device-tree/templates/smart-gateway-example.dtsi'
 )
 
 $missing = @($required | Where-Object { -not (Test-Path $_) })

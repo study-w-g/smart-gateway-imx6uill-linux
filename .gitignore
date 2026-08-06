@@ -36,6 +36,19 @@ configs/wifi.conf
 *.crt
 *.secret
 
+# User-space and Qt generated binaries
+app/gateway_manager/gateway-manager
+app/tests/test_ds18b20
+app/tests/test_sht30
+app/tests/test_gpio
+app/servo_control/*.o
+app/servo_control/*.a
+qt/Makefile
+qt/.qmake.stash
+qt/moc_*.cpp
+qt/ui_*.h
+qt/gateway-monitor
+
 # IDE and OS files
 .idea/
 .vscode/

@@ -1,0 +1,14 @@
+[Unit]
+Description=i.MX6ULL 智能网关用户态服务
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/smart-gateway
+ExecStart=/usr/bin/gateway-manager
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

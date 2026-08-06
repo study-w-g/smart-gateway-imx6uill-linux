@@ -9,6 +9,7 @@
 #include <linux/mutex.h>
 #include <linux/of.h>
 #include <linux/platform_device.h>
+#include <linux/slab.h>
 #include <linux/uaccess.h>
 
 /*
@@ -130,93 +131,176 @@ static struct class *ds18b20_class;
 static int ds18b20_reset(struct ds18b20 *sensor)
 {
 	int presence;
+	int ret;
 
-	gpiod_direction_output(sensor->dq, 0);
+	ret = gpiod_direction_output(sensor->dq, 0);
+	if (ret)
+		return ret;
 	udelay(480);
-	gpiod_direction_input(sensor->dq);
+	ret = gpiod_direction_input(sensor->dq);
+	if (ret)
+		return ret;
 	udelay(70);
-	presence = !gpiod_get_value_cansleep(sensor->dq);
+	presence = gpiod_get_value_cansleep(sensor->dq);
 	udelay(410);
+	if (presence < 0)
+		return presence;
 
-	return presence ? 0 : -ENODEV;
+	return presence ? -ENODEV : 0;
 }
 
-static void ds18b20_write_bit(struct ds18b20 *sensor, bool bit)
+static int ds18b20_write_bit(struct ds18b20 *sensor, bool bit)
 {
-	gpiod_direction_output(sensor->dq, 0);
+	int ret;
+
+	ret = gpiod_direction_output(sensor->dq, 0);
+	if (ret)
+		return ret;
 	if (bit) {
 		udelay(6);
-		gpiod_direction_input(sensor->dq);
+		ret = gpiod_direction_input(sensor->dq);
 		udelay(64);
 	} else {
 		udelay(60);
-		gpiod_direction_input(sensor->dq);
+		ret = gpiod_direction_input(sensor->dq);
 		udelay(10);
 	}
+	return ret;
 }
 
-static bool ds18b20_read_bit(struct ds18b20 *sensor)
+static int ds18b20_read_bit(struct ds18b20 *sensor, bool *bit)
 {
 	int value;
+	int ret;
 
-	gpiod_direction_output(sensor->dq, 0);
+	ret = gpiod_direction_output(sensor->dq, 0);
+	if (ret)
+		return ret;
 	udelay(6);
-	gpiod_direction_input(sensor->dq);
+	ret = gpiod_direction_input(sensor->dq);
+	if (ret)
+		return ret;
 	udelay(9);
 	value = gpiod_get_value_cansleep(sensor->dq);
 	udelay(55);
+	if (value < 0)
+		return value;
 
-	return value > 0;
+	*bit = value > 0;
+	return 0;
 }
 
-static void ds18b20_write_byte(struct ds18b20 *sensor, u8 value)
+static int ds18b20_write_byte(struct ds18b20 *sensor, u8 value)
 {
+	int i;
+	int ret;
+
+	for (i = 0; i < 8; i++) {
+		ret = ds18b20_write_bit(sensor, value & BIT(0));
+		if (ret)
+			return ret;
+		value >>= 1;
+	}
+	return 0;
+}
+
+static int ds18b20_read_byte(struct ds18b20 *sensor, u8 *value)
+{
+	u8 result = 0;
+	bool bit;
+	int ret;
 	int i;
 
 	for (i = 0; i < 8; i++) {
-		ds18b20_write_bit(sensor, value & BIT(0));
-		value >>= 1;
+		ret = ds18b20_read_bit(sensor, &bit);
+		if (ret)
+			return ret;
+		if (bit)
+			result |= BIT(i);
 	}
+
+	*value = result;
+	return 0;
 }
 
-static u8 ds18b20_read_byte(struct ds18b20 *sensor)
+/* DS18B20 CRC-8：多项式 0x8c，按最低位优先计算。 */
+static u8 ds18b20_crc8(const u8 *data, int length)
 {
-	u8 value = 0;
+	u8 crc = 0;
+	int i;
+	int bit;
+
+	for (i = 0; i < length; i++) {
+		crc ^= data[i];
+		for (bit = 0; bit < 8; bit++) {
+			if (crc & 1)
+				crc = (crc >> 1) ^ 0x8c;
+			else
+				crc >>= 1;
+		}
+	}
+	return crc;
+}
+
+static int ds18b20_wait_conversion(struct ds18b20 *sensor)
+{
+	bool ready;
+	int ret;
 	int i;
 
-	for (i = 0; i < 8; i++)
-		if (ds18b20_read_bit(sensor))
-			value |= BIT(i);
-
-	return value;
+	/* 每 10 ms 查询一次，最多等待 750 ms，避免无限等待。 */
+	for (i = 0; i < 75; i++) {
+		ret = ds18b20_read_bit(sensor, &ready);
+		if (ret)
+			return ret;
+		if (ready)
+			return 0;
+		msleep(10);
+	}
+	return -ETIMEDOUT;
 }
 
 static int ds18b20_read_temperature(struct ds18b20 *sensor, s16 *raw)
 {
-	u8 lsb, msb;
+	u8 scratchpad[9];
 	int ret;
+	int read_ret;
 
 	ret = ds18b20_reset(sensor);
 	if (ret)
 		return ret;
-	ds18b20_write_byte(sensor, DS18B20_CMD_SKIP_ROM);
-	ds18b20_write_byte(sensor, DS18B20_CMD_CONVERT_T);
+	ret = ds18b20_write_byte(sensor, DS18B20_CMD_SKIP_ROM);
+	if (ret)
+		return ret;
+	ret = ds18b20_write_byte(sensor, DS18B20_CMD_CONVERT_T);
+	if (ret)
+		return ret;
 	/*
 	 * 12-bit 分辨率下，DS18B20 最长转换时间约为 750ms。
-	 * 这里的 msleep() 是一个固定等待；正式版本应进一步读取转换完成状态
-	 * 或使用有上限的等待策略，并处理传感器断开等异常。
+	 * 这里通过读时隙查询完成状态，并设置 750 ms 上限。
 	 */
-	msleep(750);
+	ret = ds18b20_wait_conversion(sensor);
+	if (ret)
+		return ret;
 
 	ret = ds18b20_reset(sensor);
 	if (ret)
 		return ret;
-	ds18b20_write_byte(sensor, DS18B20_CMD_SKIP_ROM);
-	ds18b20_write_byte(sensor, DS18B20_CMD_READ_SCRATCH);
+	ret = ds18b20_write_byte(sensor, DS18B20_CMD_SKIP_ROM);
+	if (ret)
+		return ret;
+	ret = ds18b20_write_byte(sensor, DS18B20_CMD_READ_SCRATCH);
+	if (ret)
+		return ret;
 
-	lsb = ds18b20_read_byte(sensor);
-	msb = ds18b20_read_byte(sensor);
-	*raw = (s16)((msb << 8) | lsb);
+	for (ret = 0; ret < ARRAY_SIZE(scratchpad); ret++) {
+		read_ret = ds18b20_read_byte(sensor, &scratchpad[ret]);
+		if (read_ret)
+			return read_ret;
+	}
+	if (ds18b20_crc8(scratchpad, 8) != scratchpad[8])
+		return -EBADMSG;
+	*raw = (s16)((scratchpad[1] << 8) | scratchpad[0]);
 	return 0;
 }
 
@@ -245,6 +329,7 @@ static ssize_t ds18b20_read(struct file *file, char __user *buf,
 	struct ds18b20 *sensor = file->private_data;
 	s16 raw;
 	int ret;
+	(void)ppos;
 
 	/* 用户缓冲区至少要能接收一个 s16 原始值。 */
 	if (count < sizeof(raw))

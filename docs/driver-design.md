@@ -6,7 +6,7 @@
 
 - 基于设备树获取 GPIO 资源
 - 完成复位、ROM 命令、温度转换和暂存器读取
-- CRC 校验以及超时/重试处理
+- Scratchpad CRC 校验以及温度转换超时处理
 - 使用延迟工作或工作队列进行周期采样
 - 使用互斥锁保护最新数据缓存
 - 使用阻塞式 `read()` 和 `poll()` 通知新采样值
@@ -29,6 +29,16 @@
 - 在进程上下文中使用工作队列消抖
 - 使用事件队列和 `poll()` 向用户态通知
 - 用 LED 表示启动、网络正常、运行正常和传感器故障状态
+
+## 当前代码对应关系
+
+| 功能 | 源码 | 接口 |
+|---|---|---|
+| DS18B20 | `drivers/ds18b20/ds18b20.c` | `/dev/ds18b20` |
+| SHT30 | `drivers/sht30/sht30.c` | `/dev/sht30` |
+| GPIO 按键/LED | `drivers/gpio_event/gpio_event.c` | `/dev/gpio-event` |
+| C 后端 | `app/gateway_manager/` | Unix Socket、MQTT |
+| Qt 前端 | `qt/` | 本地监控 |
 
 ## 并发模型
 

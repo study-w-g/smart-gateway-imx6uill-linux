@@ -1,0 +1,38 @@
+/*
+ * 这是设备树写法模板，不是可以直接烧录的最终文件。
+ *
+ * 使用前必须确认：
+ * 1. 正点原子 I.MX6U ALPHA V2.2 使用的 I2C 控制器编号；
+ * 2. SHT30 的实际地址是 0x44 还是 0x45；
+ * 3. DS18B20、按键和 LED 的实际 GPIO；
+ * 4. pinctrl、上拉电阻和 GPIO 有效电平；
+ * 5. 你的厂家内核是否使用相同的 GPIO 描述符语法。
+ *
+ * 因为这些硬件参数尚未确认，本模板只保留注释示例，不会自动加入板级 DTS。
+ */
+
+/*
+&i2cX {
+	clock-frequency = <100000>;
+	status = "okay";
+
+	sht30@44 {
+		compatible = "study-wg,sht30";
+		reg = <0x44>;
+		status = "okay";
+	};
+};
+
+gpio_event {
+	compatible = "study-wg,gpio-event";
+	key-gpios = <&gpioX Y GPIO_ACTIVE_LOW>;
+	led-gpios = <&gpioX Z GPIO_ACTIVE_HIGH>;
+	status = "okay";
+};
+
+ds18b20 {
+	compatible = "study-wg,ds18b20";
+	dq-gpios = <&gpioX W GPIO_ACTIVE_HIGH>;
+	status = "okay";
+};
+*/
